@@ -12,9 +12,6 @@ export default function Home() {
           height={38}
           priority
         />
-        <h1 className="text-4xl font-bold text-blue-500">
-          Tailwind CSS is working!
-        </h1>
         <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2">
             Get started by editing{" "}
