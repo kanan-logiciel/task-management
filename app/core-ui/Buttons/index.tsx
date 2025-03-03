@@ -7,17 +7,19 @@ const Button = ({
 }: {
   children: ReactNode;
   onClick: () => void;
-  variant?: string;
+  variant?: "primary" | "secondary" | "google";
 }) => {
   const variantStyles =
     variant === "primary"
-      ? "bg-primary text-white"
+      ? "bg-primary text-white hover:bg-primary/80"
+      : variant === "google"
+      ? "bg-white text-gray-700 border border-gray-300 "
       : "bg-gray-300 text-gray-700";
 
   return (
     <button
       onClick={onClick}
-      className={`px-6 py-2 w-full rounded-md font-medium ${variantStyles} transition-colors duration-300 hover:opacity-80`}
+      className={`px-6 py-2 w-full rounded-md font-medium ${variantStyles} transition-colors duration-300 hover:opacity-80 flex items-center justify-center gap-2`}
     >
       {children}
     </button>
