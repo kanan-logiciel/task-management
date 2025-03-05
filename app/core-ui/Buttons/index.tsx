@@ -7,13 +7,15 @@ const Button = ({
 }: {
   children: ReactNode;
   onClick: () => void;
-  variant?: "primary" | "secondary" | "google";
+  variant?: "primary" | "secondary" | "google" | "logout";
 }) => {
   const variantStyles =
     variant === "primary"
       ? "bg-primary text-white hover:bg-primary/80"
       : variant === "google"
-      ? "bg-white text-gray-700 border border-gray-300 "
+      ? "bg-white text-gray-700 border border-gray-300"
+      : variant === "logout"
+      ? "bg-red-500 text-white hover:bg-red-600"
       : "bg-gray-300 text-gray-700";
 
   return (

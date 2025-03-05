@@ -4,23 +4,27 @@ import { useState } from "react";
 import Button from "@/app/core-ui/Buttons";
 import Input from "@/app/core-ui/Inputs";
 import AuthLayout from "@/app/layouts/authLayout";
-import { useAuthHook } from "@/app/hooks/useAuth";
 import Link from "next/link";
 import Image from "next/image";
+import { useAuth } from "@/app/context/AuthContext";
 
 const Login = () => {
-  const { login } = useAuthHook();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    login(email, password);
+  const { login } = useAuth();
+
+  const handleLogin = async () => {
+    try {
+      await login(email, password);
+    } catch {
+      console.error("Invalid email or password!");
+    }
   };
 
   return (
     <AuthLayout>
       <div className="w-full max-w-sm">
-        {/* Login Header */}
         <h2 className="text-3xl font-bold text-center text-gray-800">
           Welcome Back!
         </h2>
@@ -28,7 +32,6 @@ const Login = () => {
           Enter your credentials to access your account
         </p>
 
-        {/* Input Fields */}
         <div className="mt-6 space-y-4">
           <Input
             label="Email"
@@ -46,7 +49,6 @@ const Login = () => {
           />
         </div>
 
-        {/* Forgot Password */}
         <div className="text-right mt-2">
           <Link
             href="/auth/forgot-password"
@@ -56,19 +58,16 @@ const Login = () => {
           </Link>
         </div>
 
-        {/* Login Button */}
         <Button variant="primary" onClick={handleLogin}>
           Login
         </Button>
 
-        {/* OR Divider */}
         <div className="flex items-center my-4">
           <hr className="flex-grow border-gray-300" />
           <span className="px-2 text-gray-500 text-sm">OR</span>
           <hr className="flex-grow border-gray-300" />
         </div>
 
-        {/* Google Sign-in Button */}
         <Button
           variant="google"
           onClick={() => console.log("Signing in with Google")}
@@ -79,7 +78,6 @@ const Login = () => {
           </div>
         </Button>
 
-        {/* Sign-up Link */}
         <p className="text-center mt-4 text-sm text-gray-600">
           Don’t have an account?{" "}
           <Link

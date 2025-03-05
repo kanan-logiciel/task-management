@@ -1,10 +1,12 @@
 "use client";
-import { createContext, useContext, useEffect, useState } from "react";
+
+import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 interface AuthContextType {
   user: string | null;
-  login: (email: string, password: string) => void;
+  login: (email: string, password: string) => Promise<void>;
+  signup: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -15,31 +17,58 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(storedUser);
+    const token = localStorage.getItem("token");
+    if (token) {
+      setUser(JSON.parse(localStorage.getItem("user")!));
     }
   }, []);
 
-  const login = (email: string, password: string) => {
-    // Hash the password before storing it
-    const hashedPassword = btoa(password);
-    localStorage.setItem(
-      "user",
-      JSON.stringify({ email, password: hashedPassword })
-    );
-    setUser(email);
-    router.push("/auth/dashboard");
+  const signup = async (email: string, password: string) => {
+    try {
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!res.ok) throw new Error(await res.text());
+
+      await login(email, password);
+    } catch (error) {
+      console.error("Signup Error:", error);
+    }
+  };
+
+  const login = async (email: string, password: string) => {
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!res.ok) throw new Error(await res.text());
+
+      const data = await res.json();
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      setUser(data.user);
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Login Error:", error);
+    }
   };
 
   const logout = () => {
+    localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
     router.push("/auth/login");
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -2,25 +2,46 @@
 
 import Button from "@/app/core-ui/Buttons";
 import Input from "@/app/core-ui/Inputs";
-import { useAuthHook } from "@/app/hooks/useAuth";
 import Link from "next/link";
 import { useState } from "react";
 import AuthLayout from "@/app/layouts/authLayout";
+import { useAuth } from "@/app/context/AuthContext";
 
 const Signup = () => {
-  const { login } = useAuthHook();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSignup = () => {
+  const { signup } = useAuth();
+
+  const handleSignup = async () => {
+    setError("");
+
+    if (!email || !password || !confirmPassword) {
+      setError("All fields are required.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
       return;
     }
-    setError("");
-    login(email, password);
+
+    try {
+      setLoading(true);
+      await signup(email, password);
+    } catch {
+      setError("Signup failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -61,11 +82,13 @@ const Signup = () => {
 
         {/* Error Message */}
         {error && (
-          <p className="text-sm text-center text-red-600 mt-2 ">{error}</p>
+          <p className="text-sm text-center text-red-600 mt-2">{error}</p>
         )}
 
         {/* Sign Up Button */}
-        <Button onClick={handleSignup}>Sign Up</Button>
+        <Button onClick={handleSignup}>
+          {loading ? "Signing Up..." : "Sign Up"}
+        </Button>
 
         {/* Login Link */}
         <p className="text-center mt-4 text-sm text-gray-600">
