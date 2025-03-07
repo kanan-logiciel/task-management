@@ -1,29 +1,97 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Sidebar from "../core-ui/Sidebar";
-import Header from "../core-ui/Header";
 import { useAuth } from "../context/AuthContext";
+import ProtectedRoute from "../components/protectedRoutes";
+import DashboardLayout from "../layouts/dashLayout";
+import StatCard from "../core-ui/Card/statsCard";
+import QuickAccessCard from "../core-ui/Card/quickAccessCard";
+import RecentProjects from "../core-ui/Card/recentCard";
+import RecentTasks from "../core-ui/Card/recentTaskCard";
+
+interface Metrics {
+  completed: number;
+  pending: number;
+  overdue: number;
+}
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const router = useRouter();
 
+  const [metrics] = useState<Metrics>({
+    completed: 12,
+    pending: 5,
+    overdue: 3,
+  });
+
   useEffect(() => {
     if (!user) {
-      router.push("/auth/login");
+      console.log("No user found, redirecting to login...");
+      router.replace("/auth/login");
+    } else {
+      console.log("User authenticated:", user);
     }
   }, [user, router]);
 
   if (!user) return <p>Loading...</p>;
 
   return (
-    <div className="flex h-screen">
-      <Sidebar />
-      <div className="flex flex-col flex-1">
-        <Header />
-      </div>
-    </div>
+    <ProtectedRoute>
+      <DashboardLayout>
+        <div className="space-y-6">
+          {/* Title */}
+          <div>
+            <h1 className="text-3xl font-semibold text-secondary">Dashboard</h1>
+            <p className="text-gray mt-2">Overview of your projects & tasks</p>
+          </div>
+
+          {/* Key Metrics Section */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <StatCard
+              title="Completed Tasks"
+              value={metrics.completed}
+              color="bg-success"
+            />
+            <StatCard
+              title="Pending Tasks"
+              value={metrics.pending}
+              color="bg-yellow"
+            />
+            <StatCard
+              title="Overdue Tasks"
+              value={metrics.overdue}
+              color="bg-red-500"
+            />
+          </div>
+
+          {/* Quick Access Links */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <QuickAccessCard
+              title="Projects"
+              link="/projects"
+              description="View & manage projects"
+            />
+            <QuickAccessCard
+              title="Tasks"
+              link="/tasks"
+              description="Track & complete tasks"
+            />
+            <QuickAccessCard
+              title="Calendar"
+              link="/calendar"
+              description="Check deadlines"
+            />
+          </div>
+
+          {/* Recent Projects & Tasks */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <RecentProjects />
+            <RecentTasks />
+          </div>
+        </div>
+      </DashboardLayout>
+    </ProtectedRoute>
   );
 }

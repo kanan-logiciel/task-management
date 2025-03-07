@@ -1,27 +1,61 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import type { User } from "next-auth";
 
 interface AuthContextType {
-  user: string | null;
+  user: User | null;
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string) => Promise<void>;
+  googleSignIn: () => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<string | null>(null);
+  const { data: session } = useSession();
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setUser(JSON.parse(localStorage.getItem("user")!));
+    if (session?.user) {
+      setUser(session.user);
+      localStorage.setItem("user", JSON.stringify(session.user));
+    } else {
+      localStorage.removeItem("user");
     }
-  }, []);
+  }, [session]);
+
+  const googleSignIn = async () => {
+    try {
+      const res = await signIn("google", { redirect: false });
+
+      if (res?.error) {
+        alert("User not found. Please sign up first.");
+        return;
+      }
+
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Google Sign-in Error:", error);
+    }
+  };
+
+  const login = async (email: string, password: string) => {
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (res?.error) {
+      throw new Error(res.error);
+    }
+    router.push("/dashboard");
+  };
 
   const signup = async (email: string, password: string) => {
     try {
@@ -39,36 +73,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const login = async (email: string, password: string) => {
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!res.ok) throw new Error(await res.text());
-
-      const data = await res.json();
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      setUser(data.user);
-      router.push("/dashboard");
-    } catch (error) {
-      console.error("Login Error:", error);
-    }
-  };
-
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    signOut();
     setUser(null);
-    router.push("/auth/login");
+    router.replace("/auth/login");
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, login, signup, googleSignIn, logout }}>
       {children}
     </AuthContext.Provider>
   );

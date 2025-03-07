@@ -1,8 +1,10 @@
 "use client";
 import { FiBell, FiUser, FiMoon, FiSun } from "react-icons/fi";
 import { useState, useEffect } from "react";
+import { useAuth } from "@/app/context/AuthContext";
 
 const Header = () => {
+  const { logout } = useAuth();
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -18,6 +20,12 @@ const Header = () => {
         </button>
         <FiBell />
         <FiUser />
+        <button
+          onClick={logout}
+          className="px-4 py-2 bg-gray text-white rounded-md hover:bg-gray-600 transition"
+        >
+          Logout
+        </button>
       </div>
     </header>
   );

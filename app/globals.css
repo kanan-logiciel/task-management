@@ -1,28 +1,75 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 :root {
   --color-primary: 99 102 241;
   --color-secondary: 19 17 53;
   --color-gray: 150 149 185;
-  --color-yellow: 245 219 10;
+  --color-yellow: 240 173 78;
   --color-lightGray: 62 60 91;
   --color-lightPurple: 56 46 113;
   --color-violet: 42 32 93;
   --color-purple: 31 29 80;
-  --color-success: 45 249 177;
-  --color-green: 0 131 85;
+  --color-success: 34 187 51;
+  --color-green: 75 181 67;
   --color-violet: 42 32 93;
 }
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: rgb(var(--color-lightGray));
+  color: rgb(var(--color-secondary));
+}
+
 .bg-primary {
   background-color: rgb(var(--color-primary));
 }
+
 .text-primary {
   color: rgb(var(--color-primary));
 }
+
 .bg-secondary {
   background-color: rgb(var(--color-secondary));
 }
+
 .text-secondary {
   color: rgb(var(--color-secondary));
+}
+
+.bg-gray {
+  background-color: rgb(var(--color-gray));
+}
+
+.text-gray {
+  color: rgb(var(--color-gray));
+}
+
+.bg-success {
+  background-color: rgb(var(--color-success));
+}
+
+.text-success {
+  color: rgb(var(--color-success));
+}
+
+.bg-yellow {
+  background-color: rgb(var(--color-yellow));
+}
+
+.text-yellow {
+  color: rgb(var(--color-yellow));
+}
+
+.card {
+  @apply p-6 rounded-lg shadow-lg bg-white;
+}
+
+.card-title {
+  @apply text-lg font-semibold text-secondary;
+}
+
+.card-subtitle {
+  @apply text-gray mt-1;
 }

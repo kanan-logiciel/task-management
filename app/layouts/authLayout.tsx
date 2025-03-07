@@ -10,7 +10,6 @@ interface AuthLayoutProps {
 const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Left Side - Styled Side Note Shape */}
       <motion.div
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
@@ -18,7 +17,6 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
         className="hidden md:flex items-center justify-center w-1/2 bg-gradient-to-r from-primary to-indigo-500 relative rounded-tr-[80px] rounded-br-[80px] overflow-hidden shadow-lg"
         style={{ clipPath: "polygon(0 0, 100% 0, 85% 100%, 0 100%)" }}
       >
-        {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <Image
             src="/logo.jpg"
@@ -30,7 +28,6 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
           <div className="absolute inset-0 bg-black/30"></div>
         </div>
 
-        {/* Text or Branding */}
         <div className="relative z-10 text-white text-center px-6">
           <h2 className="text-4xl font-bold">CollabeSphere</h2>
           <p className="mt-2 text-sm opacity-90">
@@ -39,7 +36,6 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
         </div>
       </motion.div>
 
-      {/* Right Side - Auth Form */}
       <motion.div
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}

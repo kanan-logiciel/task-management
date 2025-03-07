@@ -1,24 +1,50 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/app/core-ui/Buttons";
 import Input from "@/app/core-ui/Inputs";
 import AuthLayout from "@/app/layouts/authLayout";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/app/context/AuthContext";
+import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const { login } = useAuth();
+  const { login, googleSignIn } = useAuth();
+  const { status } = useSession();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const errorMessageFromUrl = searchParams.get("error");
+
+  useEffect(() => {
+    if (errorMessageFromUrl) {
+      setErrorMessage(decodeURIComponent(errorMessageFromUrl));
+    }
+  }, [errorMessageFromUrl]);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/dashboard");
+    }
+  }, [status, router]);
 
   const handleLogin = async () => {
     try {
       await login(email, password);
+    } catch (error) {
+      console.error("Invalid email or password!", error);
+    }
+  };
+  const handleGoogleSignIn = async () => {
+    try {
+      await googleSignIn();
     } catch {
-      console.error("Invalid email or password!");
+      alert("User not registered. Please sign up first.");
     }
   };
 
@@ -31,7 +57,11 @@ const Login = () => {
         <p className="text-sm text-center text-gray-500 mt-1">
           Enter your credentials to access your account
         </p>
-
+        {errorMessage && (
+          <div className="mt-4 text-center text-red-600 text-sm">
+            {errorMessage}
+          </div>
+        )}
         <div className="mt-6 space-y-4">
           <Input
             label="Email"
@@ -68,10 +98,7 @@ const Login = () => {
           <hr className="flex-grow border-gray-300" />
         </div>
 
-        <Button
-          variant="google"
-          onClick={() => console.log("Signing in with Google")}
-        >
+        <Button variant="google" onClick={handleGoogleSignIn}>
           <div className="flex items-center justify-center gap-2 w-full">
             <Image src="/google.png" alt="Google" width={30} height={30} />
             <span className="font-medium">Continue with Google</span>

@@ -9,15 +9,13 @@ if (!MONGODB_URI) {
 export const connectDB = async () => {
   try {
     if (mongoose.connection.readyState >= 1) {
-      console.log("Already connected to MongoDB");
-      return;
+      return "MongoDB is already connected";
     }
     await mongoose.connect(MONGODB_URI, {
-      dbName: "TaskManagementDB", // Set database name explicitly
+      dbName: "TaskManagementDB",
     });
     console.log("MongoDB Connected ✅");
-  } catch (error) {
-    console.error("MongoDB Connection Error ❌:", error);
+  } catch {
     throw new Error("Failed to connect to MongoDB");
   }
 };

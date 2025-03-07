@@ -47,7 +47,6 @@ const Signup = () => {
   return (
     <AuthLayout>
       <div className="w-full max-w-sm">
-        {/* Page Title */}
         <h2 className="text-3xl font-bold text-center text-gray-800">
           Create Account
         </h2>
@@ -55,7 +54,6 @@ const Signup = () => {
           Sign up to start using our platform.
         </p>
 
-        {/* Input Fields */}
         <div className="mt-6 mb-4 space-y-4">
           <Input
             label="Email"
@@ -80,17 +78,14 @@ const Signup = () => {
           />
         </div>
 
-        {/* Error Message */}
         {error && (
           <p className="text-sm text-center text-red-600 mt-2">{error}</p>
         )}
 
-        {/* Sign Up Button */}
         <Button onClick={handleSignup}>
           {loading ? "Signing Up..." : "Sign Up"}
         </Button>
 
-        {/* Login Link */}
         <p className="text-center mt-4 text-sm text-gray-600">
           Already have an account?{" "}
           <Link
