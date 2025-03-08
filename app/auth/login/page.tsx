@@ -36,15 +36,8 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       await login(email, password);
-    } catch (error) {
-      console.error("Invalid email or password!", error);
-    }
-  };
-  const handleGoogleSignIn = async () => {
-    try {
-      await googleSignIn();
     } catch {
-      alert("User not registered. Please sign up first.");
+      setErrorMessage("Invalid email or password!");
     }
   };
 
@@ -98,7 +91,7 @@ const Login = () => {
           <hr className="flex-grow border-gray-300" />
         </div>
 
-        <Button variant="google" onClick={handleGoogleSignIn}>
+        <Button variant="google" onClick={googleSignIn}>
           <div className="flex items-center justify-center gap-2 w-full">
             <Image src="/google.png" alt="Google" width={30} height={30} />
             <span className="font-medium">Continue with Google</span>

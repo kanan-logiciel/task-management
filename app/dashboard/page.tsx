@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
 import ProtectedRoute from "../components/protectedRoutes";
 import DashboardLayout from "../layouts/dashLayout";
 import StatCard from "../core-ui/Card/statsCard";
@@ -17,25 +15,11 @@ interface Metrics {
 }
 
 export default function DashboardPage() {
-  const { user } = useAuth();
-  const router = useRouter();
-
   const [metrics] = useState<Metrics>({
     completed: 12,
     pending: 5,
     overdue: 3,
   });
-
-  useEffect(() => {
-    if (!user) {
-      console.log("No user found, redirecting to login...");
-      router.replace("/auth/login");
-    } else {
-      console.log("User authenticated:", user);
-    }
-  }, [user, router]);
-
-  if (!user) return <p>Loading...</p>;
 
   return (
     <ProtectedRoute>

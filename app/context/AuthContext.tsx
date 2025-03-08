@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
+    if (session === undefined) return;
     if (session?.user) {
       setUser(session.user);
       localStorage.setItem("user", JSON.stringify(session.user));
@@ -31,14 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const googleSignIn = async () => {
     try {
-      const res = await signIn("google", { redirect: false });
-
-      if (res?.error) {
-        alert("User not found. Please sign up first.");
-        return;
-      }
-
-      router.push("/dashboard");
+      await signIn("google");
     } catch (error) {
       console.error("Google Sign-in Error:", error);
     }

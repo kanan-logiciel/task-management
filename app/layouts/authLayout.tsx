@@ -21,10 +21,13 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
           <Image
             src="/logo.jpg"
             alt="Auth Illustration"
-            layout="fill"
-            objectFit="cover"
+            fill={true}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority
+            style={{ objectFit: "cover" }}
             className="opacity-70"
           />
+
           <div className="absolute inset-0 bg-black/30"></div>
         </div>
 
