@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import AuthLayout from "@/app/layouts/authLayout";
 import Input from "@/app/core-ui/Inputs";
 import Button from "@/app/core-ui/Buttons";
+import { resetPassword } from "@/app/services/authService";
 
 const ResetPassword = () => {
   const searchParams = useSearchParams();
@@ -38,28 +39,17 @@ const ResetPassword = () => {
     setError("");
     setMessage("");
 
-    try {
-      const res = await fetch("/api/user/reset-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, newPassword }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.error);
-
-      setMessage("Password reset successfully! Redirecting to login...");
+    const response = await resetPassword(token, newPassword);
+    if (response.success) {
+      setMessage(response.message);
       setTimeout(() => {
         router.push("/auth/login");
       }, 2000);
-    } catch (error: unknown) {
-      setError(
-        (error as Error).message || "Something went wrong. Please try again."
-      );
-    } finally {
-      setLoading(false);
+    } else {
+      setError(response.message);
     }
+
+    setLoading(false);
   };
 
   return (

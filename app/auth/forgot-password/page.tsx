@@ -5,6 +5,7 @@ import Button from "@/app/core-ui/Buttons";
 import Input from "@/app/core-ui/Inputs";
 import Link from "next/link";
 import AuthLayout from "@/app/layouts/authLayout";
+import { forgotPassword } from "@/app/services/authService";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -22,27 +23,14 @@ const ForgotPassword = () => {
     setMessage("");
     setError("");
 
-    try {
-      const res = await fetch("/api/user/forget-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        if (res.status === 404) {
-          throw new Error("User not found. Please sign up first.");
-        }
-        throw new Error(data.error);
-      }
-
-      setMessage("link sent successfully via email");
-    } catch (error) {
-      setError((error as Error).message);
-    } finally {
-      setLoading(false);
+    const response = await forgotPassword(email);
+    if (response.success) {
+      setMessage(response.message);
+    } else {
+      setError(response.message);
     }
+
+    setLoading(false);
   };
 
   return (
