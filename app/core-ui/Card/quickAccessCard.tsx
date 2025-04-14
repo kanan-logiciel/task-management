@@ -1,19 +1,30 @@
-const QuickAccessCard = ({
-  title,
-  link,
-  description,
-}: {
+import Link from "next/link";
+
+interface QuickAccessCardProps {
   title: string;
   link: string;
   description: string;
-}) => (
-  <a
-    href={link}
-    className="p-6 bg-white shadow-lg rounded-lg hover:shadow-xl transition"
-  >
-    <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-    <p className="text-gray-600 mt-1">{description}</p>
-  </a>
-);
+  icon?: React.ReactNode;
+}
 
-export default QuickAccessCard;
+export default function QuickAccessCard({
+  title,
+  link,
+  description,
+  icon,
+}: QuickAccessCardProps) {
+  return (
+    <Link
+      href={link}
+      className="card hover:bg-lightGray transition-all duration-300"
+    >
+      <div className="flex items-center space-x-4">
+        {icon}
+        <div>
+          <h2 className="card-title">{title}</h2>
+          <p className="card-subtitle">{description}</p>
+        </div>
+      </div>
+    </Link>
+  );
+}

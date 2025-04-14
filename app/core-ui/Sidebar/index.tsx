@@ -1,6 +1,12 @@
 "use client";
 import { useState } from "react";
-import { FiHome, FiCheckSquare, FiSettings, FiMenu } from "react-icons/fi";
+import {
+  FiHome,
+  FiCheckSquare,
+  FiSettings,
+  FiMenu,
+  FiUsers,
+} from "react-icons/fi";
 import Link from "next/link";
 
 const Sidebar = () => {
@@ -9,10 +15,13 @@ const Sidebar = () => {
   return (
     <div
       className={`h-screen bg-gray-800 text-white p-4 transition-all ${
-        collapsed ? "w-16" : "w-64"
+        collapsed ? "w-20" : "w-64"
       }`}
     >
-      <button onClick={() => setCollapsed(!collapsed)} className="mb-6 text-lg">
+      <button
+        onClick={() => setCollapsed(!collapsed)}
+        className="mb-6 text-xl p-2 hover:bg-gray-700 rounded-md"
+      >
         <FiMenu />
       </button>
       <nav className="space-y-4">
@@ -26,6 +35,12 @@ const Sidebar = () => {
           href="/tasks"
           icon={<FiCheckSquare />}
           text="Tasks"
+          collapsed={collapsed}
+        />
+        <SidebarItem
+          href="/teams"
+          icon={<FiUsers />}
+          text="Teams"
           collapsed={collapsed}
         />
         <SidebarItem
