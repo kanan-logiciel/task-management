@@ -19,15 +19,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { data: session } = useSession();
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (session === undefined) return;
+
     if (session?.user) {
       setUser(session.user);
       localStorage.setItem("user", JSON.stringify(session.user));
+
+      if (timer) clearTimeout(timer);
+      setTimer(setTimeout(logout, 3600000));
     } else {
       localStorage.removeItem("user");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   const googleSignIn = async () => {
@@ -70,6 +76,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     signOut();
     setUser(null);
+    localStorage.removeItem("user");
     router.replace("/auth/login");
   };
 
