@@ -1,17 +1,18 @@
 import Link from "next/link";
+import { IconType } from "react-icons";
 
 interface QuickAccessCardProps {
   title: string;
   link: string;
   description: string;
-  icon?: React.ReactNode;
+  icon: IconType;
 }
 
 export default function QuickAccessCard({
   title,
   link,
   description,
-  icon,
+  icon: Icon,
 }: QuickAccessCardProps) {
   return (
     <Link
@@ -19,7 +20,7 @@ export default function QuickAccessCard({
       className="card hover:bg-lightGray transition-all duration-300"
     >
       <div className="flex items-center space-x-4">
-        {icon}
+        <Icon className="text-3xl text-primary" />
         <div>
           <h2 className="card-title">{title}</h2>
           <p className="card-subtitle">{description}</p>

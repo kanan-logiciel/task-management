@@ -1,5 +1,6 @@
-/** @type {import('tailwindcss').Config} */
-const config = {
+import type { Config } from "tailwindcss";
+
+const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,11 +11,11 @@ const config = {
       colors: {
         primary: "rgb(var(--color-primary) / <alpha-value>)",
         secondary: "rgb(var(--color-secondary) / <alpha-value>)",
-        lightGray: "rgb(var(--color-lightGray) / <alpha-value>)",
         gray: "rgb(var(--color-gray) / <alpha-value>)",
-        violet: "rgb(var(--color-violet) / <alpha-value>)",
         yellow: "rgb(var(--color-yellow) / <alpha-value>)",
+        lightGray: "rgb(var(--color-lightGray) / <alpha-value>)",
         lightPurple: "rgb(var(--color-lightPurple) / <alpha-value>)",
+        violet: "rgb(var(--color-violet) / <alpha-value>)",
         purple: "rgb(var(--color-purple) / <alpha-value>)",
         success: "rgb(var(--color-success) / <alpha-value>)",
         green: "rgb(var(--color-green) / <alpha-value>)",

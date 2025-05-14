@@ -1,3 +1,4 @@
+// DashboardPage.tsx
 "use client";
 
 import { useMemo } from "react";
@@ -5,10 +6,10 @@ import { motion } from "framer-motion";
 import ProtectedRoute from "../protected-route/protectedRoutes";
 import DashboardLayout from "../layouts/dashLayout";
 import QuickAccessCard from "../core-ui/Card/quickAccessCard";
-import RecentProjects from "../core-ui/Card/recentCard";
 import RecentTasks from "../core-ui/Card/recentTaskCard";
 import TaskProgressChart from "../core-ui/Chart";
-import { FaTasks, FaProjectDiagram, FaCalendarAlt } from "react-icons/fa";
+import { QuickAccessLink, quickAccessLinks } from "@/config/data";
+import RecentProjects from "../core-ui/Card/recentProjectCard";
 
 export default function DashboardPage() {
   const taskData = useMemo(() => {
@@ -58,24 +59,20 @@ export default function DashboardPage() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            <QuickAccessCard
-              title="Projects"
-              link="/projects"
-              description="View & manage projects"
-              icon={<FaProjectDiagram className="text-primary text-3xl" />}
-            />
-            <QuickAccessCard
-              title="Tasks"
-              link="/tasks"
-              description="Track & complete tasks"
-              icon={<FaTasks className="text-green-500 text-3xl" />}
-            />
-            <QuickAccessCard
-              title="Calendar"
-              link="/calendar"
-              description="Check deadlines"
-              icon={<FaCalendarAlt className="text-yellow text-3xl" />}
-            />
+            {quickAccessLinks.map(
+              (
+                { title, description, link, icon: Icon }: QuickAccessLink,
+                index: number
+              ) => (
+                <QuickAccessCard
+                  key={index}
+                  title={title}
+                  link={link}
+                  description={description}
+                  icon={Icon}
+                />
+              )
+            )}
           </motion.div>
 
           <motion.div

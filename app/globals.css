@@ -13,7 +13,6 @@
   --color-purple: 31 29 80;
   --color-success: 34 187 51;
   --color-green: 75 181 67;
-  --color-violet: 42 32 93;
 }
 
 body {
@@ -22,10 +21,10 @@ body {
   color: rgb(var(--color-secondary));
 }
 
+/* Utility classes using custom properties */
 .bg-primary {
   background-color: rgb(var(--color-primary));
 }
-
 .text-primary {
   color: rgb(var(--color-primary));
 }
@@ -33,7 +32,6 @@ body {
 .bg-secondary {
   background-color: rgb(var(--color-secondary));
 }
-
 .text-secondary {
   color: rgb(var(--color-secondary));
 }
@@ -41,27 +39,60 @@ body {
 .bg-gray {
   background-color: rgb(var(--color-gray));
 }
-
 .text-gray {
   color: rgb(var(--color-gray));
-}
-
-.bg-success {
-  background-color: rgb(var(--color-success));
-}
-
-.text-success {
-  color: rgb(var(--color-success));
 }
 
 .bg-yellow {
   background-color: rgb(var(--color-yellow));
 }
-
 .text-yellow {
   color: rgb(var(--color-yellow));
 }
 
+.bg-success {
+  background-color: rgb(var(--color-success));
+}
+.text-success {
+  color: rgb(var(--color-success));
+}
+
+.bg-lightPurple {
+  background-color: rgb(var(--color-lightPurple));
+}
+.text-lightPurple {
+  color: rgb(var(--color-lightPurple));
+}
+
+.bg-violet {
+  background-color: rgb(var(--color-violet));
+}
+.text-violet {
+  color: rgb(var(--color-violet));
+}
+
+.bg-purple {
+  background-color: rgb(var(--color-purple));
+}
+.text-purple {
+  color: rgb(var(--color-purple));
+}
+
+.bg-green {
+  background-color: rgb(var(--color-green));
+}
+.text-green {
+  color: rgb(var(--color-green));
+}
+
+.bg-lightGray {
+  background-color: rgb(var(--color-lightGray));
+}
+.text-lightGray {
+  color: rgb(var(--color-lightGray));
+}
+
+/* Reusable components */
 .card {
   @apply p-6 rounded-lg shadow-lg bg-white;
 }
