@@ -33,10 +33,6 @@ export const authOptions: AuthOptions = {
           throw new Error("User not found");
         }
 
-        if (!user) {
-          throw new Error("signup_required");
-        }
-
         const isMatch = await bcrypt.compare(
           credentials.password,
           user.password
@@ -61,11 +57,12 @@ export const authOptions: AuthOptions = {
         const existingUser = await User.findOne({ email: profile?.email });
 
         if (!existingUser) {
-          return "/auth/login?error=User not registered. Please sign up first.";
+          return "/auth/login?error=User+not+registered.+Please+sign+up+first.";
         }
       }
       return true;
     },
+
     async jwt({ token, user, account }) {
       if (account) {
         token.accessToken = account.access_token;
@@ -88,7 +85,10 @@ export const authOptions: AuthOptions = {
     },
 
     async redirect({ url, baseUrl }) {
-      return url.startsWith(baseUrl) ? url : baseUrl + "/dashboard";
+      if (url.startsWith(baseUrl)) {
+        return url;
+      }
+      return baseUrl + "/dashboard";
     },
   },
 

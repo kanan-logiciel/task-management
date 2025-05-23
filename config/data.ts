@@ -11,8 +11,8 @@ export interface QuickAccessLink {
 export const quickAccessLinks: QuickAccessLink[] = [
   {
     title: "Projects",
-    link: "/projects",
-    description: "View & manage projects",
+    link: "/Projects",
+    description: "Create & manage projects",
     icon: FaProjectDiagram,
   },
   {

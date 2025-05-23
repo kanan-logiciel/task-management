@@ -4,10 +4,12 @@ const Button = ({
   children,
   onClick,
   variant = "primary",
+  type = "button", // ✅ Add type with default
 }: {
   children: ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   variant?: "primary" | "secondary" | "google" | "logout";
+  type?: "button" | "submit" | "reset"; // ✅ Accept type prop
 }) => {
   const variantStyles =
     variant === "primary"
@@ -20,6 +22,7 @@ const Button = ({
 
   return (
     <button
+      type={type} // ✅ Apply type here
       onClick={onClick}
       className={`px-6 py-2 w-full rounded-md font-medium ${variantStyles} transition-colors duration-300 hover:opacity-80 flex items-center justify-center gap-2`}
     >

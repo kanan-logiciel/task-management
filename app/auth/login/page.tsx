@@ -28,8 +28,11 @@ const Login = () => {
   }, [errorMessageFromUrl]);
 
   useEffect(() => {
-    if (status === "authenticated") {
-      router.push("/dashboard");
+    if (
+      status === "authenticated" &&
+      window.location.pathname === "/auth/login"
+    ) {
+      router.replace("/dashboard");
     }
   }, [status, router]);
 
@@ -39,6 +42,10 @@ const Login = () => {
     } catch {
       setErrorMessage("Invalid email or password!");
     }
+  };
+
+  const handleInputChange = () => {
+    if (errorMessage) setErrorMessage("");
   };
 
   return (
@@ -60,14 +67,20 @@ const Login = () => {
             label="Email"
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              handleInputChange();
+            }}
             placeholder="Enter your email"
           />
           <Input
             label="Password"
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              handleInputChange();
+            }}
             placeholder="Enter your password"
           />
         </div>
